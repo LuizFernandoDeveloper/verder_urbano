@@ -24,7 +24,6 @@ export const ContainerFooter = styled.footer`
     width: 90%;
     height: 350px;
     overflow: hidden;
-    border-radius: 25px;
   }
 `;
 
