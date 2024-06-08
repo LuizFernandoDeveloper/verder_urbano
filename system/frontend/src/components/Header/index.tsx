@@ -1,164 +1,47 @@
-import { useState } from "react";
-import {
-  HeaderContainer,
-  LinkButtonNav,
-  LogoDiv,
-  NavContainer,
-  NavContainerMobile,
-} from "./styled";
-import {
-  BsPersonWorkspaceIcon,
-  CiUserIcon,
-  FaCartShoppingIcon,
-  IoMenuOutlineIcon,
-} from "../../main-styles";
+import { useEffect, useState } from "react";
+import NavContainer from "./components/NavContainer";
+import { HeaderContainer, LogoDiv } from "./styled";
 
 function Header(): JSX.Element {
-  const [activatingHome, setActivatingHome] = useState(false);
-  const [activetingFish, setActivetingFish] = useState(false);
-  const [activatingVegetables, setActivatingVegetables] = useState(false);
-  const [activetingContact, setActivetingContact] = useState(false);
-  const [activetingLogin, setActivetingLogin] = useState(false);
-  const [activetingWorker, setActivetingWorker] = useState(false);
-  const [activetingCart, setActivetingCart] = useState(false);
-  const [activeWorkSpace, setActiveWorkSpace] = useState(false); // mais pra frete use o redux
-  const [activeButtonMenu, setActiveButtonMenu] = useState(false);
-  const [activeButtonHoverColorLogin, setActiveButtonHoverColorLogin] =
-    useState(false);
-  const [activeButtonHoverColorWork, setActiveButtonHoverColorWork] =
-    useState(false);
+  const [mobile, setMobile] = useState(false);
 
-  function isButtonNameValide(
-    buttonNameToValidade: string,
-    nameButton: string
-  ): boolean {
-    return buttonNameToValidade === nameButton ? true : false;
-  }
-
-  function isActiveButton(nameButton: string): void {
-    setActivatingHome(isButtonNameValide("home", nameButton));
-    setActivetingFish(isButtonNameValide("fish", nameButton));
-    setActivatingVegetables(isButtonNameValide("vegetable", nameButton));
-    setActivetingContact(isButtonNameValide("contact", nameButton));
-    setActivetingLogin(isButtonNameValide("login", nameButton));
-    setActivetingWorker(isButtonNameValide("worker", nameButton));
-    setActivetingCart(isButtonNameValide("cart", nameButton));
-  }
-
-  function isActiveButtonHoverColor(nameButton?: string): void {
-    if (nameButton == "work") {
-      setActiveButtonHoverColorWork(!activeButtonHoverColorWork);
-      setActiveButtonHoverColorLogin(false);
-    } else {
-      setActiveButtonHoverColorLogin(!activeButtonHoverColorLogin);
-      setActiveButtonHoverColorWork(false);
+  useEffect(() => {
+    function handleResize() {
+      const width = window.innerWidth;
+      setMobile(width <= 640);
     }
-  }
 
-  function menuButton(): void {
-    setActiveButtonMenu(!activeButtonMenu);
-  }
+    // Executa uma vez quando o componente monta
+    handleResize();
+
+    // Adiciona um listener de redimensionamento da janela
+    window.addEventListener("resize", handleResize);
+
+    // Limpa o listener ao desmontar o componente
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // O array vazio como segundo argumento significa que este useEffect só é executado uma vez, quando o componente monta
 
   return (
     <HeaderContainer className="container">
-      <LogoDiv />
-
-      <NavContainerMobile>
-        <IoMenuOutlineIcon onClick={menuButton} />
-      </NavContainerMobile>
-
+      <LogoDiv to="/" />
       <NavContainer
-        is_open={activeButtonMenu ? "true" : "false"}
-        className={activeButtonMenu ? "isActive__Button__menu--mobile" : ""}>
-        <LinkButtonNav
-          to="/"
-          paddingbuttonlink="10px"
-          onClick={() => isActiveButton("home")}
-          activatingthebuttonbordercolor={
-            activatingHome == true ? "true" : "false"
-          }>
-          HOME
-        </LinkButtonNav>
-        <LinkButtonNav
-          to="/"
-          paddingbuttonlink="10px"
-          onClick={() => isActiveButton("fish")}
-          activatingthebuttonbordercolor={
-            activetingFish == true ? "true" : "false"
-          }>
-          PEIXES
-        </LinkButtonNav>
-        <LinkButtonNav
-          to="/"
-          paddingbuttonlink="10px"
-          onClick={() => isActiveButton("vegetables")}
-          activatingthebuttonbordercolor={
-            activatingVegetables == true ? "true" : "false"
-          }>
-          VERDURAS
-        </LinkButtonNav>
-        <LinkButtonNav
-          to="/"
-          paddingbuttonlink="10px"
-          onClick={() => isActiveButton("contact")}
-          activatingthebuttonbordercolor={
-            activetingContact == true ? "true" : "false"
-          }>
-          CONTATO
-        </LinkButtonNav>
-        <LinkButtonNav
-          to="/"
-          className="marginElemt"
-          onMouseEnter={() => isActiveButtonHoverColor()}
-          onMouseLeave={() => isActiveButtonHoverColor()}
-          hovercolor={activeButtonHoverColorLogin == true ? "true" : "false"}
-          onClick={() => isActiveButton("login")}
-          activatingthebuttonbordercolor={
-            activetingLogin == true ? "true" : "false"
-          }>
-          <CiUserIcon />
-          <p>
-            Faça Login ou
-            <br />
-            crie uma conta
-          </p>
-        </LinkButtonNav>
-        {activeWorkSpace && (
-          <LinkButtonNav
-            to="/"
-            className="marginElemt"
-            onMouseEnter={() => isActiveButtonHoverColor("work")}
-            onMouseLeave={() => isActiveButtonHoverColor("work")}
-            hovercolor={activeButtonHoverColorWork == true ? "true" : "false"}
-            onClick={() => isActiveButton("worker")}
-            activatingthebuttonbordercolor={
-              activetingWorker == true ? "true" : "false"
-            }>
-            <BsPersonWorkspaceIcon />
-            <p>
-              Area de
-              <br />
-              trabalho
-            </p>
-          </LinkButtonNav>
-        )}
-        <LinkButtonNav
-          to="/"
-          paddingbuttonlink="6px"
-          onClick={() => isActiveButton("cart")}
-          activatingthebuttonbordercolor={
-            activetingCart == true ? "true" : "false"
-          }>
-          <FaCartShoppingIcon />
-          {activeButtonMenu && (
-            <p>
-              Seu carrinho
-              <br />
-              de Compras
-            </p>
-          )}
-        </LinkButtonNav>
-      </NavContainer>
+        navType="desktop"
+        className={
+          mobile == false
+            ? "isActive__nav__desktop"
+            : "itIsDeactivated__nav__desktop"
+        }
+      />
+      <NavContainer
+        navType="mobile"
+        className={
+          mobile === true
+            ? "isActive__nav__mobile"
+            : "itIsDeactivated__nav__mobile"
+        }
+      />
     </HeaderContainer>
   );
 }

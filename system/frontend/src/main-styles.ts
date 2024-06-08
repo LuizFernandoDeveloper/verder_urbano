@@ -23,13 +23,32 @@ export const WebSystemColor = {
   buttonEdgeNone: "rgba(0, 0, 0, 0)",
   buttonHouverColor: "#9DFF5E",
   mobileButtonBackgroundColor: "#020202",
+  buttonColorPrimary: "#2070E5",
+  buttonColorSecondary: "green",
 };
 
 export const MainContainer = styled.main`
   width: 100vw;
   height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
   background-color: ${WebSystemColor.applicationBackgroundColor};
-  padding-top: 30px;
+  padding-top: 20px;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    margin-right: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: ${WebSystemColor.applicationBackgroundColor};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: ${WebSystemColor.applicationBaseColor};
+    border-radius: 5px;
+    border: solid 1px white;
+  }
 `;
 
 export const IoMenuOutlineIcon = styled(IoMenuOutline)`
@@ -71,7 +90,7 @@ export const GlobalCss = createGlobalStyle`
     list-style:none;
     text-decoration: none;
   }
-
+  
   body {
     background-color: ${WebSystemColor.applicationBackgroundColor};
     color: ${WebSystemColor.primaryTextColor};
@@ -80,10 +99,22 @@ export const GlobalCss = createGlobalStyle`
   .container {
     max-width: 1024px;
     width: 100%;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
 
     @media (max-width: ${BreakPoints.desktop}){
       max-width: 950px;
+    }
+    
+    @media (max-width: ${BreakPoints.tablet}) {
+      max-width: 100vw;
+      width: 90%;
+    }
+
+     @media (max-width: ${BreakPoints.mobile}) {
+      max-width: 100vw;
+      width: 90%;
     }
   }
 `;

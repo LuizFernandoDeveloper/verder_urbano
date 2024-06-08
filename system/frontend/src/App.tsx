@@ -1,12 +1,12 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Header from "./components/Header";
 import { GlobalCss, MainContainer } from "./main-styles";
+import Home from "./views/home";
 
 function App() {
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <Header />,
+      element: <Home />,
     },
   ]);
 
